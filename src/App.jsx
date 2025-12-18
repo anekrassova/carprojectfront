@@ -5,6 +5,8 @@ import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
 import Button from "@mui/material/Button";
 
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 
@@ -14,6 +16,17 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 
 const client = new QueryClient();
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#e91e63",
+    },
+    secondary: {
+      main: "#f48fb1",
+    },
+  },
+});
 
 function AppBarWithLogout() {
   const navigate = useNavigate();
@@ -43,29 +56,31 @@ function AppBarWithLogout() {
 
 function App() {
   return (
-    <Container maxWidth="xl">
+    <ThemeProvider theme={theme}>
       <CssBaseline />
 
-      <QueryClientProvider client={client}>
-        <BrowserRouter>
-          <AppBarWithLogout />
+      <Container maxWidth="xl">
+        <QueryClientProvider client={client}>
+          <BrowserRouter>
+            <AppBarWithLogout />
 
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PrivateRoute>
-                  <CarList />
-                </PrivateRoute>
-              }
-            />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <PrivateRoute>
+                    <CarList />
+                  </PrivateRoute>
+                }
+              />
 
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </Container>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </Container>
+    </ThemeProvider>
   );
 }
 
